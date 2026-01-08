@@ -17,11 +17,11 @@ ItemManager::ItemManager(int magnifying_glass_count, int cigarette_pack_count, i
 	// 7-4: cigarette pack count
 	// 3-0: magnifying glass count
 	// LSB
-	assert(magnifying_glass_count > 0 && magnifying_glass_count <= 8);
-	assert(cigarette_pack_count > 0 && cigarette_pack_count <= 8);
-	assert(beer_count > 0 && beer_count <= 8);
-	assert(handsaw_count > 0 && handsaw_count <= 8);
-	assert(handcuff_count > 0 && handcuff_count <= 8);
+	assert(magnifying_glass_count >= 0 && magnifying_glass_count <= 8);
+	assert(cigarette_pack_count >= 0 && cigarette_pack_count <= 8);
+	assert(beer_count >= 0 && beer_count <= 8);
+	assert(handsaw_count >= 0 && handsaw_count <= 8);
+	assert(handcuff_count >= 0 && handcuff_count <= 8);
 
 	this->items = magnifying_glass_count << MAGNIFYING_GLASS_SHIFT |
 	              cigarette_pack_count << CIGARETTE_PACK_SHIFT | beer_count << BEER_SHIFT |
@@ -42,19 +42,25 @@ bool ItemManager::has_handsaw(void) const { return this->get_handsaw_count() > 0
 
 bool ItemManager::has_handcuffs(void) const { return this->get_handcuffs_count() > 0; }
 
-bool ItemManager::get_magnifying_glass_count(void) const {
-	return this->items >> MAGNIFYING_GLASS_SHIFT & 0xF;
+uint8_t ItemManager::get_magnifying_glass_count(void) const {
+	return static_cast<uint8_t>(this->items >> MAGNIFYING_GLASS_SHIFT & 0xF);
 }
 
-bool ItemManager::get_cigarette_pack_count(void) const {
-	return this->items >> CIGARETTE_PACK_SHIFT & 0xF;
+uint8_t ItemManager::get_cigarette_pack_count(void) const {
+	return static_cast<uint8_t>(this->items >> CIGARETTE_PACK_SHIFT & 0xF);
 }
 
-bool ItemManager::get_beer_count(void) const { return this->items >> BEER_SHIFT & 0xF; }
+uint8_t ItemManager::get_beer_count(void) const {
+	return static_cast<uint8_t>(this->items >> BEER_SHIFT & 0xF);
+}
 
-bool ItemManager::get_handsaw_count(void) const { return this->items >> HANDSAW_SHIFT & 0xF; }
+uint8_t ItemManager::get_handsaw_count(void) const {
+	return static_cast<uint8_t>(this->items >> HANDSAW_SHIFT & 0xF);
+}
 
-bool ItemManager::get_handcuffs_count(void) const { return this->items >> HANDCUFF_SHIFT & 0xF; }
+uint8_t ItemManager::get_handcuffs_count(void) const {
+	return static_cast<uint8_t>(this->items >> HANDCUFF_SHIFT & 0xF);
+}
 
 void ItemManager::remove_magnifying_glass(void) {
 	int magnifying_glass_count = this->items >> MAGNIFYING_GLASS_SHIFT & 0xF;

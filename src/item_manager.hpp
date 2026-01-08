@@ -25,11 +25,11 @@ class ItemManager final {
 	bool has_handsaw(void) const;
 	bool has_handcuffs(void) const;
 
-	bool get_magnifying_glass_count(void) const;
-	bool get_cigarette_pack_count(void) const;
-	bool get_beer_count(void) const;
-	bool get_handsaw_count(void) const;
-	bool get_handcuffs_count(void) const;
+	uint8_t get_magnifying_glass_count(void) const;
+	uint8_t get_cigarette_pack_count(void) const;
+	uint8_t get_beer_count(void) const;
+	uint8_t get_handsaw_count(void) const;
+	uint8_t get_handcuffs_count(void) const;
 
 	void remove_magnifying_glass(void);
 	void remove_cigarette_pack(void);

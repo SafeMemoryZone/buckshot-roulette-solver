@@ -35,8 +35,8 @@ class Node final {
 	void apply_magnify_live(void);
 	void apply_magnify_blank(void);
 	void apply_use_handsaw(void);
-    void apply_use_handcuffs(void);
-    void dealer_remove_magnifying_glass(void);
+	void apply_use_handcuffs(void);
+	void dealer_remove_magnifying_glass(void);
 	bool is_only_live_rounds(void) const;
 	bool is_only_blank_rounds(void) const;
 	bool round_known_live(void) const;
@@ -60,9 +60,9 @@ class Node final {
 	float calc_smoke_cigarette_ev(float item_pickup_probability) const;
 	float calc_use_magnifying_glass_ev(float item_pickup_probability) const;
 	float calc_use_handsaw_ev(float item_pickup_probability) const;
-    float calc_use_handcuffs_ev(float item_pickup_probability) const;
-    bool player_is_fade_charge(void) const;
-    bool dealer_is_fade_charge(void) const;
+	float calc_use_handcuffs_ev(float item_pickup_probability) const;
+	bool player_is_fade_charge(void) const;
+	bool dealer_is_fade_charge(void) const;
 
 	friend struct std::hash<Node>;
 
@@ -79,8 +79,8 @@ class Node final {
 	bool curr_is_live : 1;
 	bool curr_is_blank : 1;
 	bool handsaw_applied : 1;
-    bool handcuffs_applied : 1;
-    bool handcuffs_available : 1;
+	bool handcuffs_applied : 1;
+	bool handcuffs_available : 1;
 };
 
 #endif

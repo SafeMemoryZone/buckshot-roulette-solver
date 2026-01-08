@@ -12,7 +12,7 @@ struct Args {
 };
 
 void print_help(void) {
-	std::cout << "Usage: buckshot-roulettee [FLAGS]\n"
+	std::cout << "Usage: buckshot-roulette [FLAGS]\n"
 	          << "  --help, --h        : Print this help message.\n"
 	          << "  (No flags)         : Run the solver.\n";
 }

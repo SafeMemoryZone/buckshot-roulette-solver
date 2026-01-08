@@ -33,7 +33,10 @@ bool Node::operator==(const Node &other) const {
 	       this->max_lives == other.max_lives && this->dealer_lives == other.dealer_lives &&
 	       this->player_lives == other.player_lives &&
 	       this->is_dealer_turn == other.is_dealer_turn &&
-	       this->curr_is_live == other.curr_is_live && this->curr_is_blank == other.curr_is_blank;
+	       this->curr_is_live == other.curr_is_live && this->curr_is_blank == other.curr_is_blank &&
+	       this->handsaw_applied == other.handsaw_applied &&
+	       this->handcuffs_applied == other.handcuffs_applied &&
+	       this->handcuffs_available == other.handcuffs_available;
 }
 
 void Node::apply_shoot_dealer_live(void) {
@@ -155,6 +158,8 @@ void Node::apply_drink_beer_live(void) {
 }
 
 void Node::apply_drink_beer_blank(void) {
+	assert(this->blank_round_count > 0);
+
 	this->blank_round_count--;
 	this->curr_is_live = false;
 	this->curr_is_blank = false;
@@ -360,7 +365,9 @@ float Node::expectimax(void) const {
 	    this->get_states_after_shoot();
 
 	if (this->is_dealer_turn) {
-		const float item_pickup_probability = 1.0f / this->dealer_items.get_item_count();
+		const int dealer_item_count = this->dealer_items.get_item_count();
+		const float item_pickup_probability =
+		    dealer_item_count > 0 ? 1.0f / dealer_item_count : 0.0f;
 		/*
 		 * The dealer AI acts as follows:
 		 * - It always knows the last round type and acts accordingly.
@@ -377,35 +384,37 @@ float Node::expectimax(void) const {
 		 * - Handcuffs: If the player is not already handcuffed and it's not the last round.
 		 */
 
-		bool chose_item = false;
-		float ev_after_item_usage = 0.0f;
+		if (dealer_item_count > 0) {
+			bool chose_item = false;
+			float ev_after_item_usage = 0.0f;
 
-		if (this->dealer_items.has_beer() && !this->curr_is_live && !this->is_last_round()) {
-			ev_after_item_usage += this->calc_drink_beer_ev(item_pickup_probability);
-			chose_item = true;
-		}
-		if (this->dealer_items.has_cigarette_pack() && this->dealer_lives != this->max_lives) {
-			ev_after_item_usage += this->calc_smoke_cigarette_ev(item_pickup_probability);
-			chose_item = true;
-		}
-		if (this->dealer_items.has_magnifying_glass() && !this->curr_is_live &&
-		    !this->curr_is_blank && !this->is_last_round()) {
-			ev_after_item_usage += this->calc_use_magnifying_glass_ev(item_pickup_probability);
-			chose_item = true;
-		}
-		if (this->dealer_items.has_handsaw() && !this->handsaw_applied && this->curr_is_live) {
-			ev_after_item_usage += this->calc_use_handsaw_ev(item_pickup_probability);
-			chose_item = true;
-		}
-		if (this->dealer_items.has_handcuffs() && this->handcuffs_available &&
-		    !this->handcuffs_applied && !this->is_last_round()) {
-			ev_after_item_usage += this->calc_use_handcuffs_ev(item_pickup_probability);
-			chose_item = true;
-		}
+			if (this->dealer_items.has_beer() && !this->curr_is_live && !this->is_last_round()) {
+				ev_after_item_usage += this->calc_drink_beer_ev(item_pickup_probability);
+				chose_item = true;
+			}
+			if (this->dealer_items.has_cigarette_pack() && this->dealer_lives != this->max_lives) {
+				ev_after_item_usage += this->calc_smoke_cigarette_ev(item_pickup_probability);
+				chose_item = true;
+			}
+			if (this->dealer_items.has_magnifying_glass() && !this->curr_is_live &&
+			    !this->curr_is_blank && !this->is_last_round()) {
+				ev_after_item_usage += this->calc_use_magnifying_glass_ev(item_pickup_probability);
+				chose_item = true;
+			}
+			if (this->dealer_items.has_handsaw() && !this->handsaw_applied && this->curr_is_live) {
+				ev_after_item_usage += this->calc_use_handsaw_ev(item_pickup_probability);
+				chose_item = true;
+			}
+			if (this->dealer_items.has_handcuffs() && this->handcuffs_available &&
+			    !this->handcuffs_applied && !this->is_last_round()) {
+				ev_after_item_usage += this->calc_use_handcuffs_ev(item_pickup_probability);
+				chose_item = true;
+			}
 
-		if (chose_item) {
-			tt_manager.add_node(*this, ev_after_item_usage);
-			return ev_after_item_usage;
+			if (chose_item) {
+				tt_manager.add_node(*this, ev_after_item_usage);
+				return ev_after_item_usage;
+			}
 		}
 
 		if (this->is_last_round()) {
