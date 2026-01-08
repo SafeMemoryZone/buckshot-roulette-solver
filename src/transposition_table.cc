@@ -6,16 +6,16 @@ std::size_t std::hash<Node>::operator()(const Node &node) const {
 	return static_cast<std::size_t>(node.dealer_items.items & 0xFFFFF) |
 	       (static_cast<std::size_t>(node.player_items.items & 0xFFFFF) << 20) |
 	       (static_cast<std::size_t>(node.live_round_count & 0xF) << 40) |
-	       (static_cast<std::size_t>(node.blank_round_count & 0b111) << 44) |
-	       (static_cast<std::size_t>(node.max_lives & 0b111) << 47) |
-	       (static_cast<std::size_t>(node.dealer_lives & 0b111) << 50) |
-	       (static_cast<std::size_t>(node.player_lives & 0b111) << 53) |
-	       (static_cast<std::size_t>(node.is_dealer_turn & 0b1) << 56) |
-	       (static_cast<std::size_t>(node.curr_is_live & 0b1) << 57) |
-	       (static_cast<std::size_t>(node.curr_is_blank & 0b1) << 58) |
-	       (static_cast<std::size_t>(node.handsaw_applied & 0b1) << 59) |
-	       (static_cast<std::size_t>(node.handcuffs_applied & 0b1) << 60) |
-	       (static_cast<std::size_t>(node.handcuffs_available & 0b1) << 61);
+	       (static_cast<std::size_t>(node.blank_round_count & 0xF) << 44) |
+	       (static_cast<std::size_t>(node.max_lives & 0b111) << 48) |
+	       (static_cast<std::size_t>(node.dealer_lives & 0b111) << 51) |
+	       (static_cast<std::size_t>(node.player_lives & 0b111) << 54) |
+	       (static_cast<std::size_t>(node.is_dealer_turn & 0b1) << 57) |
+	       (static_cast<std::size_t>(node.curr_is_live & 0b1) << 58) |
+	       (static_cast<std::size_t>(node.curr_is_blank & 0b1) << 59) |
+	       (static_cast<std::size_t>(node.handsaw_applied & 0b1) << 60) |
+	       (static_cast<std::size_t>(node.handcuffs_applied & 0b1) << 61) |
+	       (static_cast<std::size_t>(node.handcuffs_available & 0b1) << 62);
 }
 
 void TranspositionTableManager::add_node(const Node &node, float ev) {
