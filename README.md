@@ -1,4 +1,4 @@
-# Buckshot-Roulette
+# Buckshot Roulette Solver
 
 Expectimax solver for the game Buckshot-Roulette. This algorithm is designed to work exclusively for normal mode (it does not support "double or nothing" mode).
 
@@ -25,7 +25,7 @@ cmake .. && make
 3. Run the executable:
 
 ```sh
-./buckshot-roulette
+./buckshot-roulette-solver
 ```
 
 ## Available Items

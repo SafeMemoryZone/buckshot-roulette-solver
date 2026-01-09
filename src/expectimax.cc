@@ -345,7 +345,12 @@ bool Node::is_terminal(void) const {
 }
 
 float Node::eval(void) const {
-	// TODO: Improve eval
+	if (dealer_lives == 0) {
+		return 100;
+	}
+	else if (player_lives == 0) {
+		return -100;
+	}
 	return (this->player_lives - this->dealer_lives) * 10;
 }
 
