@@ -4,7 +4,7 @@ Expectimax solver for the game Buckshot-Roulette. This algorithm is designed to 
 
 ## Note
 
-This project is under developement. The engine still has some bugs and needs to be tested.
+The solver only implements a trivial evaluation function and there are several improvements to be made. Contributions are welcome! 
 
 ## Quickstart
 
