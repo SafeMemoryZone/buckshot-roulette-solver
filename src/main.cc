@@ -6,28 +6,42 @@
 
 #include "expectimax.hpp"
 #include "item_manager.hpp"
+#include "levenshtein.hpp"
+
+bool is_match(std::string_view s1, std::string_view s2) {
+	return compute_levenshtein_distance(s1, s2) <= 3;
+}
 
 ItemManager prompt_items(std::string_view prompt) {
 	std::cout << prompt << '\n';
 	std::string curr_line;
 	std::getline(std::cin, curr_line);
 
+	curr_line.erase(remove_if(curr_line.begin(), curr_line.end(), isspace));
+	std::transform(curr_line.begin(), curr_line.end(), curr_line.begin(),
+	               [](unsigned char c) { return std::tolower(c); });
+
 	ItemManager items;
 
 	while (!curr_line.empty()) {
-		if (curr_line == "beer") {
+		if (is_match(curr_line, "beer")) {
+			std::cout << "[INFO] Added 'beer'.\n";
 			items.add_beer();
 		}
-		else if (curr_line == "cigarettes") {
+		else if (is_match("cigarettes", curr_line)) {
+			std::cout << "[INFO] Added 'cigarettes'.\n";
 			items.add_cigarette_pack();
 		}
-		else if (curr_line == "magnifying glass") {
+		else if (is_match("magnifying glass", curr_line)) {
+			std::cout << "[INFO] Added 'magnifying glass'.\n";
 			items.add_magnifying_glass();
 		}
-		else if (curr_line == "handsaw") {
+		else if (is_match("handsaw", curr_line) && !is_match("handcuffs", curr_line)) {
+			std::cout << "[INFO] Added 'handsaw'.\n";
 			items.add_handsaw();
 		}
-		else if (curr_line == "handcuffs") {
+		else if (is_match("handcuffs", curr_line) && !is_match("handsaw", curr_line)) {
+			std::cout << "[INFO] Added 'handcuffs'.\n";
 			items.add_handcuffs();
 		}
 		else {
