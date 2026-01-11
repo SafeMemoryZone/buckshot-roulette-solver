@@ -36,18 +36,18 @@ ItemManager prompt_items(std::string_view prompt) {
 			std::cout << "[INFO] Added 'magnifying glass'.\n";
 			items.add_magnifying_glass();
 		}
-		else if (is_match("handsaw", curr_line) && !is_match("handcuffs", curr_line)) {
-			std::cout << "[INFO] Added 'handsaw'.\n";
+		else if (is_match("saw", curr_line)) {
+			std::cout << "[INFO] Added 'saw'.\n";
 			items.add_handsaw();
 		}
-		else if (is_match("handcuffs", curr_line) && !is_match("handsaw", curr_line)) {
-			std::cout << "[INFO] Added 'handcuffs'.\n";
+		else if (is_match("cuffs", curr_line)) {
+			std::cout << "[INFO] Added 'cuffs'.\n";
 			items.add_handcuffs();
 		}
 		else {
 			std::cout << "[ERROR] Unknown item name '" << curr_line
-			          << "'\nAvailable items: beer, cigarettes, magnifying glass, handsaw and "
-			             "handcuffs.\n";
+			          << "'\nAvailable items: beer, cigarettes, magnifying glass, saw and "
+			             "cuffs.\n";
 		}
 		std::getline(std::cin, curr_line);
 	}
